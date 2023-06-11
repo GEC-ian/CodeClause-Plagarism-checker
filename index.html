@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Plagiarism Checker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ffffff;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+      margin-top: 0;
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      background-color: #060505;
+      padding: 20px;
+      border-radius: 9px;
+      box-shadow: 0 16px 19px rgba(10, 10, 10, 0.1);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .upload-btn {
+      display: inline-block;
+      padding: 8px 12px;
+      background-color: #1274a9;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .file-name {
+      display: inline-block;
+      margin-left: 10px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      background-color: #fa00fa;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+
+    .result p {
+      margin: 0;
+    }
+  </style>
+  <script>
+    function handleFileUpload() {
+      const fileInput = document.getElementById("file-input");
+      const fileName = document.getElementById("file-name");
+      const file = fileInput.files[0];
+
+      if (file) {
+        fileName.textContent = file.name;
+      }
+    }
+
+    function checkPlagiarism() {
+      const fileInput = document.getElementById("file-input");
+      const file = fileInput.files[0];
+
+      if (!file) {
+        alert("Please select a file to check for plagiarism.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const fileContent = event.target.result;
+        const randomPhrase = getRandomPhrase(fileContent);
+
+        // Perform Google search and process results here
+        // ...
+
+        // Example output
+        const similarityPercentage = 75;
+        const similarPhrases = [
+          "Lorem ipsum dolor sit amet",
+          "consectetur adipiscing elit",
+          "sed do eiusmod tempor",
+          "incididunt ut labore et dolore magna aliqua",
+          "Ut enim ad minim veniam"
+        ];
+        const originalUrls = [
+        "www.google.com/search?q=Lorem+ipsum+dolor+sit+amet&source=hp&ei=gSOGZN_2JufUseMP1IeC4Ag&iflsig=AOEireoAAAAAZIYxkf9DK5hz7FOxVNSzu0DAlxlValQO&ved=0ahUKEwifu6Pa_Lv_AhVnamwGHdSDAIwQ4dUDCAk&uact=5&oq=Lorem+ipsum+dolor+sit+amet&gs_lcp=Cgdnd3Mtd2l6EAMyBQgAEIAEMgUIABCABDIFCAAQgAQyBQgAEIAEMgUIABCABDIFCAAQgAQyBQgAEIAEMgUIABCABDIFCAAQgAQyBQgAEIAEOhAILhADEI8BEOoCEIwDEOUCOhAIABADEI8BEOoCEIwDEOUCOggILhCKBRCRAjoICAAQigUQkQI6CwgAEIAEELEDEIMBOgUILhCABDoICAAQgAQQsQNQ6gdY4YsBYOmSAWgEcAB4AIAB6gGIAacDkgEFMC4xLjGYAQCgAQGgAQKwAQo&sclient=gws-wiz" , 
+        "www.google.com/search?q=consectetur+adipiscing+elit&ei=mCOGZNyXLdfWseMP_NG5-AU&ved=0ahUKEwjcw6Xl_Lv_AhVXa2wGHfxoDl8Q4dUDCA8&uact=5&oq=consectetur+adipiscing+elit&gs_lcp=Cgxnd3Mtd2l6LXNlcnAQAzIHCAAQigUQQzIFCAAQgAQyBQgAEIAEMggIABCKBRCGAzIICAAQigUQhgMyCAgAEIoFEIYDMggIABCKBRCGAzoPCAAQigUQ6gIQtAIQQxgBOhkIABCKBRDqAhC0AhCKAxC3AxDUAxDlAhgBOhUIABADEI8BEOoCELQCEIwDEOUCGAI6FQguEAMQjwEQ6gIQtAIQjAMQ5QIYAkoECEEYAFAAWMIEYOoHaAFwAXgAgAHCAYgBwgGSAQMwLjGYAQCgAQGgAQKwARTAAQHaAQQIARgH2gEGCAIQARgK&sclient=gws-wiz-serp",
+        "www.google.com/search?q=sed+do+eiusmod+tempor&ei=4SOGZK-nI4jdseMP64u1wA0&ved=0ahUKEwjvm4OI_bv_AhWIbmwGHetFDdgQ4dUDCA8&uact=5&oq=sed+do+eiusmod+tempor&gs_lcp=Cgxnd3Mtd2l6LXNlcnAQAzIFCAAQgAQyBQgAEIAEMgYIABAWEB4yBggAEBYQHjIGCAAQFhAeMgYIABAWEB4yBggAEBYQHjIGCAAQFhAeMgYIABAWEB4yCAgAEIoFEIYDOg8IABCKBRDqAhC0AhBDGAE6GQgAEIoFEOoCELQCEIoDELcDENQDEOUCGAE6FQguEAMQjwEQ6gIQtAIQjAMQ5QIYAjoVCAAQAxCPARDqAhC0AhCMAxDlAhgCSgQIQRgAUABY1gRgnRJoAXABeACAAdsBiAHbAZIBAzItMZgBAKABAaABArABFMABAdoBBAgBGAfaAQYIAhABGAo&sclient=gws-wiz-serp",
+        "www.google.com/search?q=incididunt+ut+labore+et+dolore+magna+aliqua&ei=-SOGZJCAGKbiseMPlayD2AM&ved=0ahUKEwjQ4LCT_bv_AhUmcWwGHRXWADsQ4dUDCA8&uact=5&oq=incididunt+ut+labore+et+dolore+magna+aliqua&gs_lcp=Cgxnd3Mtd2l6LXNlcnAQAzIFCAAQgAQyBggAEBYQHjIGCAAQFhAeSgQIQRgAUABYAGDFCGgAcAF4AIAB0AGIAdABkgEDMi0xmAEAoAECoAEBwAEB&sclient=gws-wiz-serp",
+        "www.google.com/search?q=Ut+enim+ad+minim+veniam&ei=CiSGZO3KPNHbseMPotGf4As&ved=0ahUKEwjt9-Kb_bv_AhXRbWwGHaLoB7wQ4dUDCA8&uact=5&oq=Ut+enim+ad+minim+veniam&gs_lcp=Cgxnd3Mtd2l6LXNlcnAQAzIFCAAQgAQyBQgAEIAEMgUIABCABDIFCAAQgAQyBQgAEIAEMgUIABCABDIGCAAQFhAeMgYIABAWEB4yBggAEBYQHjIGCAAQFhAeOgoIABBHENYEELADOhkIABCKBRDqAhC0AhCKAxC3AxDUAxDlAhgBOhUILhADEI8BEOoCELQCEIwDEOUCGAI6FQgAEAMQjwEQ6gIQtAIQjAMQ5QIYAkoECEEYAFDFDVjtEWCoMmgCcAF4AIAB_gGIAf4BkgEDMi0xmAEAoAEBoAECsAEUwAEByAEI2gEECAEYB9oBBggCEAEYCg&sclient=gws-wiz-serp",
+        ];
+
+        showResults(similarityPercentage, similarPhrases, originalUrls);
+      };
+
+      reader.readAsText(file);
+    }
+
+    function getRandomPhrase(content) {
+      // Extract a random phrase (5-10 words) from the content
+      // You can use a more sophisticated algorithm to select the phrase
+      // Here, we split the content by spaces and select a random range of words
+      const words = content.split(" ");
+      const start = Math.floor(Math.random() * (words.length - 10));
+      const end = start + Math.floor(Math.random() * 6) + 5;
+
+      return words.slice(start, end).join(" ");
+    }
+
+    function showResults(similarityPercentage, similarPhrases, originalUrls) {
+      const resultElement = document.getElementById("result");
+
+      resultElement.innerHTML = `
+        <p>Similarity: ${similarityPercentage}%</p>
+        <p>${similarityPercentage >= 50 ? "Plagiarism Detected" : "No Plagiarism Detected"}</p>
+        <h3>Similar Phrases:</h3>
+        <ul>
+          ${similarPhrases.map((phrase, index) => `<li><a href="${originalUrls[index]}">${phrase}</a></li>`).join("")}
+        </ul>
+      `;
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Plagiarism Checker</h1>
+    <div class="form-group">
+      <label for="file-input">Upload File:</label>
+      <label for="file-input" class="upload-btn">Browse</label>
+      <span id="file-name" class="file-name"></span>
+      <input type="file" id="file-input" accept=".doc, .docx, .gdoc" onchange="handleFileUpload()">
+    </div>
+    <button onclick="checkPlagiarism()">Check Plagiarism</button>
+    <div class="result" id="result"></div>
+  </div>
+</body>
+</html>
